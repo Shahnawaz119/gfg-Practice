@@ -1,18 +1,20 @@
 class Solution {
   public:
     int knapsack(int W, vector<int> &val, vector<int> &wt) {
+        // code here
         int n=wt.size();
-        int m=W;
-        vector<vector<int>> arr(n+1,vector<int> (m+1,0));
+        vector<vector<int>> dp(n+1,vector<int>(W+1,0));
         for(int i=1; i<=n; i++){
-            for(int j=1; j<=m; j++){
-                if(wt[i-1]>j){
-                    arr[i][j]=arr[i-1][j];
+            for(int j=1; j<=W; j++){
+                int itemWt=wt[i-1];
+                int itemValue=val[i-1];
+                if(itemWt>j){
+                    dp[i][j]=dp[i-1][j];
                 }else{
-                    arr[i][j]=max(arr[i-1][j],val[i-1]+arr[i-1][j-wt[i-1]]);
+                    dp[i][j]=max(dp[i-1][j],itemValue+dp[i-1][j-itemWt]);
                 }
             }
         }
-        return arr[n][m];
+        return dp[n][W];
     }
 };
