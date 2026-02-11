@@ -1,0 +1,44 @@
+class Solution {
+  public:
+    int merge(vector<int> &arr, int l, int mid, int r) {
+        vector<int> merged;
+        int i = l; int j = mid + 1;
+
+        int inversions = 0;
+        while(i <= mid && j <= r) {
+            if(arr[i] <= arr[j]) {
+                merged.push_back(arr[i]);
+                i++;
+            }else{
+                inversions += mid - i + 1;
+                merged.push_back(arr[j]);
+                j++;
+            }
+        }
+        while(i <= mid) merged.push_back(arr[i++]);
+        while(j <= r) merged.push_back(arr[j++]);
+
+        for(int i = l; i <= r; i++) {
+            arr[i] = merged[i - l];
+        }        
+        return inversions;
+    }
+
+    int countInversion(vector<int> &arr, int l, int r) {
+        if(l >= r) {
+            return 0;
+        }
+        int mid = (l + r) / 2;
+
+        int inversions = 0;
+        inversions += countInversion(arr, l, mid);
+        inversions += countInversion(arr, mid + 1, r);
+        inversions += merge(arr, l, mid, r);
+
+        return inversions;
+    }
+    int inversionCount(vector<int> &arr) {
+        // Code Here
+        return countInversion(arr, 0, arr.size() - 1);
+    }
+};
