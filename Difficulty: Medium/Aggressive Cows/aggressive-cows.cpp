@@ -1,14 +1,14 @@
 class Solution {
   public:
-    bool possible(vector<int>&stalls,int mid,int k){
-        int currCow=1;
-        int currDis=stalls[0];
-        for(int i=0; i<stalls.size(); i++){
-            if(stalls[i]-currDis>=mid){
-                currCow++;
-                currDis=stalls[i];
+    bool isPossible(vector<int>&stalls,int mid,int k){
+        int cows=1;
+        int minVal=stalls[0];
+        for(int i=1; i<stalls.size(); i++){
+            if(stalls[i]-minVal>=mid){
+                cows++;
+                minVal=stalls[i];
             }
-            if(currCow>=k){
+            if(cows==k){
                 return true;
             }
         }
@@ -16,14 +16,14 @@ class Solution {
     }
     int aggressiveCows(vector<int> &stalls, int k) {
         // code here
-        sort(stalls.begin(),stalls.end());
         int n=stalls.size();
-        int left=0;
-        int right=stalls[n-1];
-        int ans=0;
+        sort(stalls.begin(),stalls.end());
+        int left=1;
+        int right=stalls[n-1]-stalls[0];
+        int ans=-1;
         while(left<=right){
             int mid=left+(right-left)/2;
-            if(possible(stalls,mid,k)){
+            if(isPossible(stalls,mid,k)){
                 ans=mid;
                 left=mid+1;
             }else{
